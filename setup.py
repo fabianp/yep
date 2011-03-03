@@ -17,7 +17,7 @@ Operating System :: MacOS
 
 setup(
     name='yep',
-    description='The Yep Extension Profiler',
+    description=open('README.rst').read(),
     version=yep.__version__,
     author='Fabian Pedregosa',
     author_email='fabian.pedregosa@inria.fr',
