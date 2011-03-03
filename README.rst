@@ -43,6 +43,14 @@ Python code::
 This will create a file_name.prof to be analized with pperf.
 
 
+Development
+-----------
+
+Git repository can be found here::
+
+    https://github.com/fabianp/yep
+
+
 Bugs
 ----
 
