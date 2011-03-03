@@ -8,7 +8,7 @@ pprof for visualization.
 See http://pypi.python.org/pypi/yep for more info.
 """
 
-_CMD_USAGE = """usage: python -m yep scriptfile [arg] ...
+_CMD_USAGE = """usage: python -m yep [options] scriptfile [arg] ...
 
 This will create a file scriptfile.prof that can be analyzed with
 pprof (google-pprof on Debian-based systems).
@@ -59,7 +59,7 @@ def main():
         dest='visualize', help='Visualize result at exit',
         default=False)
     parser.add_option('-c', '--callgrind', action='store_true',
-        dest='callgrind', help='Output file in callgrind format.',
+        dest='callgrind', help='Output file in callgrind format',
         default=False)
 
 
@@ -68,6 +68,7 @@ def main():
         sys.exit(2)
 
     (options, args) = parser.parse_args()
+    sys.argv[:] = args
 
 #       .. get file name ..
     main_file = os.path.abspath(args[0])
