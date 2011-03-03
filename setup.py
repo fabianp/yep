@@ -17,7 +17,8 @@ Operating System :: MacOS
 
 setup(
     name='yep',
-    description=open('README.rst').read(),
+    description='A module for profiling compiled extensions',
+    long_description=open('README.rst').read(),
     version=yep.__version__,
     author='Fabian Pedregosa',
     author_email='fabian.pedregosa@inria.fr',
