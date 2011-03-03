@@ -26,6 +26,7 @@ else:
         'is installed on your system'
         )
 
+__version__ = '0.1'
 
 def start(file_name=None):
     """

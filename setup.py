@@ -1,4 +1,4 @@
-
+import yep
 from distutils.core import setup
 
 CLASSIFIERS = """\
@@ -18,7 +18,7 @@ Operating System :: MacOS
 setup(
     name='yep',
     description='The Yep Extension Profiler',
-    version='0.0',
+    version=yep.__version__,
     author='Fabian Pedregosa',
     author_email='fabian.pedregosa@inria.fr',
     url='http://fseoane.net/software/yep',
