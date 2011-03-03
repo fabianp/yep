@@ -106,8 +106,6 @@ def main():
                  shell=True)
 
         if options.callgrind:
-            if options.outfile.endswith('prof'):
-                callgrind_out = options.outfile[:-4] + 'grind'
             call("%s --callgrind %s %s > %s" % \
                  (pprof_exec, sys.executable, out_file, options.outfile),
                  shell=True)
