@@ -22,7 +22,7 @@ setup(
     version=yep.__version__,
     author='Fabian Pedregosa',
     author_email='fabian.pedregosa@inria.fr',
-    url='http://fseoane.net/software/yep',
+    url='http://pypi.python.org/pypi/yep',
 	py_modules=['yep'],
     classifiers=[_f for _f in CLASSIFIERS.split('\n') if _f],
 
