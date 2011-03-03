@@ -77,8 +77,8 @@ def main():
         out_file = options.outfile
     else:
         import tempfile
-        tmp = tempfile.NamedTemporaryFile()
-        out_file = tmp.name
+        tmp_file = tempfile.NamedTemporaryFile()
+        out_file = tmp_file.name
     if not os.path.exists(main_file):
         print('Error:', main_file, 'does not exist')
         sys.exit(1)
@@ -111,7 +111,7 @@ def main():
             call("%s --callgrind %s %s > %s" % \
                  (pprof_exec, sys.executable, out_file, options.outfile),
                  shell=True)
-            tmp.close()
+            tmp_file.close()
 
 
 if __name__ == '__main__':
