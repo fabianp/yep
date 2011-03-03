@@ -8,7 +8,7 @@ pprof for visualization.
 See http://pypi.python.org/pypi/yep for more info.
 """
 
-_CMD_USAGE = """usage: python -m yap scriptfile [arg] ...
+_CMD_USAGE = """usage: python -m yep scriptfile [arg] ...
 
 This will create a file scriptfile.prof that can be analyzed with
 pprof (google-pprof on Debian-based systems).
@@ -59,7 +59,7 @@ def main():
         dest='visualize', help='Visualize result at exit',
         default=False)
     parser.add_option('-c', '--callgrind', action='store_true',
-        dest='callgrind', help='Output file `outfile.grind` in callgrind format.',
+        dest='callgrind', help='Output file in callgrind format.',
         default=False)
     parser.add_option('--gv', action='store_true',
         dest='gv', help='Visualize result with ghostview',
@@ -76,13 +76,19 @@ def main():
     main_file = os.path.abspath(args[0])
     if options.outfile is None:
         options.outfile = os.path.basename(main_file) + '.prof'
+    if not options.callgrind:
+        out_file = options.outfile
+    else:
+        import tempfile
+        tmp = tempfile.NamedTemporaryFile()
+        out_file = tmp.name
     if not os.path.exists(main_file):
         print('Error:', main_file, 'does not exist')
         sys.exit(1)
 
 #       .. execute file ..
     sys.path.insert(0, os.path.dirname(main_file))
-    start(options.outfile)
+    start(out_file)
     exec(compile(open(main_file).read(), main_file, 'exec'),
          __main__.__dict__)
     stop()
@@ -106,8 +112,9 @@ def main():
             if options.outfile.endswith('prof'):
                 callgrind_out = options.outfile[:-4] + 'grind'
             call("%s --callgrind %s %s > %s" % \
-                 (pprof_exec, sys.executable, options.outfile, callgrind_out),
+                 (pprof_exec, sys.executable, out_file, options.outfile),
                  shell=True)
+            tmp.close()
 
         if options.gv:
             call("%s --gv %s %s" % \
