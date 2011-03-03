@@ -61,9 +61,6 @@ def main():
     parser.add_option('-c', '--callgrind', action='store_true',
         dest='callgrind', help='Output file in callgrind format.',
         default=False)
-    parser.add_option('--gv', action='store_true',
-        dest='gv', help='Visualize result with ghostview',
-        default=False)
 
 
     if not sys.argv[1:] or sys.argv[1] in ("--help", "-h"):
@@ -93,7 +90,7 @@ def main():
          __main__.__dict__)
     stop()
 
-    if any((options.callgrind, options.visualize, options.gv)):
+    if any((options.callgrind, options.visualize)):
         from subprocess import call
         try:
             res = call('google-pprof --help > /dev/null', shell=True)
@@ -115,11 +112,6 @@ def main():
                  (pprof_exec, sys.executable, out_file, options.outfile),
                  shell=True)
             tmp.close()
-
-        if options.gv:
-            call("%s --gv %s %s" % \
-                 (pprof_exec, sys.executable, options.outfile),
-                 shell=True)
 
 
 if __name__ == '__main__':
