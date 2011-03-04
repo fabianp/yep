@@ -26,7 +26,7 @@ else:
         'is installed on your system'
         )
 
-__version__ = '0.1'
+__version__ = '0.2'
 
 def start(file_name=None):
     """
@@ -95,7 +95,7 @@ def main():
     if any((options.callgrind, options.visualize)):
         from subprocess import call
         try:
-            res = call('google-pprof --help > /dev/null', shell=True)
+            res = call(['google-pprof', '--help'])
         except OSError:
             res = 1
         pprof_exec = ('google-pprof', 'pprof')[res != 0]
