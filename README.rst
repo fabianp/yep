@@ -11,8 +11,12 @@ Install
 -------
 
 This package depends on google-perftools (package google-perftools in
-Debian). Once you have fulfilled these depencies you can install the
-package with the usual command::
+Debian). Once you have fulfilled these depencies you can install it
+with easy_install::
+
+    $ easy_install -U yep
+
+or download the package, uncompress and execute the standard command::
 
     $ python setup.py install
 
