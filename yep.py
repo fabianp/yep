@@ -90,7 +90,6 @@ def read_profile(file_name):
         if current_record == (0, 1, (0,)):
             break
         records.append(current_record)
-        print current_record
 
 
 #   .. mapped objects ..
