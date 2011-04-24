@@ -60,14 +60,14 @@ def read_profile(file_name):
     """
     import struct
     f = open(file_name, 'rb')
-    word_size, word_type = 4, 'i'
-
 
 #   .. decide architecture  ..
     header_words = f.read(8)
     if header_words == chr(0) * 8: # 64-bit
         word_size, word_type = 8, 'q'
         header_words = f.read(8)[:4]
+    else:
+        word_size, word_type = 4, 'i'
 
 
 #   .. endianness ..
