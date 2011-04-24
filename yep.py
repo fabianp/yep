@@ -14,6 +14,8 @@ This will create a file scriptfile.prof that can be analyzed with
 pprof (google-pprof on Debian-based systems).
 """
 
+__version__ = '0.3-git'
+
 
 #       .. find google-perftools ..
 import ctypes.util
@@ -26,7 +28,6 @@ else:
         'is installed on your system'
         )
 
-__version__ = '0.2'
 
 def start(file_name=None):
     """
@@ -48,6 +49,57 @@ def start(file_name=None):
 def stop():
     """Stop the CPU profiler"""
     libprofiler.ProfilerStop()
+
+
+#----------------------------------------------------------------------
+def read_profile(file_name):
+    """Read dump of profile file.
+
+    The format is described in
+    http://google-perftools.googlecode.com/svn/trunk/doc/cpuprofile-fileformat.html
+
+    TODO: this assumes the profile is read in the same architecture it was dumped.
+    """
+    import struct
+    f = open(file_name, 'rb')
+    word_size, word_type = 4, 'i'
+
+
+#   .. decide architecture  ..
+    header_words = f.read(8)
+    if header_words == chr(0) * 8: # 64-bit
+        word_size, word_type = 8, 'q'
+        header_words = f.read(8)[:4]
+
+
+#   .. endianness ..
+    if header_words[:-2] == 2 * chr(0):
+        endian = '>'
+    elif header_words[:-4:-2] == 2 * chr(0):
+        endian = '<'
+    else:
+        raise ValueError('header size >= 2**16')
+
+    header_words, = struct.unpack(endian + 'i', header_words[-4:])
+    f.read(header_words * word_size)
+
+#    .. records ..
+    records = []
+    while True:
+        sample_count, n_pcs = struct.unpack(endian + 2 * word_type, f.read(2 * word_size))
+        current_record = (sample_count, n_pcs, struct.unpack(
+            endian + n_pcs * word_type, f.read(n_pcs * word_size)))
+        if current_record == (0, 1, (0,)):
+            break
+        records.append(current_record)
+        print current_record
+
+
+#   .. mapped objects ..
+    func_map = f.readlines()
+    f.close()
+
+    return records, func_map
 
 
 def main():
