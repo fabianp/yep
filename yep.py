@@ -57,8 +57,6 @@ def read_profile(file_name):
 
     The format is described in
     http://google-perftools.googlecode.com/svn/trunk/doc/cpuprofile-fileformat.html
-
-    TODO: this assumes the profile is read in the same architecture it was dumped.
     """
     import struct
     f = open(file_name, 'rb')
