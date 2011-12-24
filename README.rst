@@ -52,7 +52,7 @@ Development
 
 Git repository can be found here::
 
-    https://github.com/fabianp/yep
+    https://github.com/fabianp/extension_profiler
 
 
 Bugs
