@@ -1,8 +1,8 @@
 ===============================
-YEP: the Yep Extension Profiler
+The Python Extension Profiler
 ===============================
 
-Yep is a tool to profile compiled code (C/C++/Fortran) from the Python
+extension_profiler is a tool to profile compiled code (C/C++/Fortran) from the Python
 interpreter. It uses the google-perftools CPU profiler and depends on
 pprof (google-pprof on Debian) for visualization.
 
