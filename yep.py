@@ -8,7 +8,7 @@ pprof for visualization.
 See http://pypi.python.org/pypi/yep for more info.
 """
 
-_CMD_USAGE = """usage: python -m yep [options] scriptfile [arg] ...
+_CMD_USAGE = """usage: python -m yep [options] -- scriptfile [arg] ...
 
 This will create a file scriptfile.prof that can be analyzed with
 pprof (google-pprof on Debian-based systems).
