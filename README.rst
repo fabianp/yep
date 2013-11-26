@@ -31,7 +31,7 @@ There are various ways to use the profiler. The simplest is add this
 module as argument to the Python interpreter when running your
 script and add flag -v to visualize the result::
 
-    $ python -m yep -v my_script.py
+    $ python -m yep -v -- my_script.py [arg] ... ...
 
 This will create a file my_script.py.prof that can be analyzed with
 pprof. Execute ``python -m yep`` to get the full list of options.
