@@ -15,7 +15,7 @@ pprof (google-pprof on Debian-based systems).
 """
 
 __version__ = '0.3-git'
-
+import sys
 
 #       .. find google-perftools ..
 import ctypes.util
@@ -39,11 +39,18 @@ def start(file_name=None):
        Name of file to store profile count. If not given, 'out.prof'
        will be used
     """
-    if file_name is None:
-        file_name = 'out.prof'
-    status = libprofiler.ProfilerStart(file_name)
-    if status < 0:
-        raise ValueError('Profiler did not start')
+    if sys.version_info >= (3, 0):
+        if file_name is None:
+            file_name = b'out.prof'
+        status = libprofiler.ProfilerStart(bytearray(file_name, 'ASCII'))
+        if status < 0:
+            raise ValueError('Profiler did not start')
+    else:
+        if file_name is None:
+            file_name = 'out.prof'
+        status = libprofiler.ProfilerStart(file_name)
+        if status < 0:
+            raise ValueError('Profiler did not start')
 
 
 def stop():
