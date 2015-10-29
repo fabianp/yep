@@ -42,7 +42,7 @@ def start(file_name=None):
     if sys.version_info >= (3, 0):
         if file_name is None:
             file_name = b'out.prof'
-        status = libprofiler.ProfilerStart(bytearray(file_name, 'ASCII'))
+        status = libprofiler.ProfilerStart(bytes(file_name, 'ASCII'))
         if status < 0:
             raise ValueError('Profiler did not start')
     else:
