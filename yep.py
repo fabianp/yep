@@ -13,12 +13,12 @@ _CMD_USAGE = """usage: python -m yep [options] -- scriptfile [arg] ...
 This will create a file scriptfile.prof that can be analyzed with
 pprof (google-pprof on Debian-based systems).
 """
-
-__version__ = '0.3-git'
 import sys
+import ctypes.util
+
+__version__ = '0.4'
 
 #       .. find google-perftools ..
-import ctypes.util
 google_profiler = ctypes.util.find_library('profiler')
 if google_profiler:
     libprofiler = ctypes.CDLL(google_profiler)
@@ -58,7 +58,7 @@ def stop():
     libprofiler.ProfilerStop()
 
 
-#----------------------------------------------------------------------
+# ----------------------------------------------------------------------
 def read_profile(file_name):
     """Read dump of profile file.
 
@@ -70,7 +70,7 @@ def read_profile(file_name):
 
 #   .. decide architecture  ..
     header_words = f.read(8)
-    if header_words == chr(0) * 8: # 64-bit
+    if header_words == chr(0) * 8:  # 64-bit
         word_size, word_type = 8, 'q'
         header_words = f.read(8)[:4]
     else:
@@ -91,7 +91,8 @@ def read_profile(file_name):
 #    .. records ..
     records = []
     while True:
-        sample_count, n_pcs = struct.unpack(endian + 2 * word_type, f.read(2 * word_size))
+        sample_count, n_pcs = struct.unpack(
+            endian + 2 * word_type, f.read(2 * word_size))
         current_record = (sample_count, n_pcs, struct.unpack(
             endian + n_pcs * word_type, f.read(n_pcs * word_size)))
         if current_record == (0, 1, (0,)):
