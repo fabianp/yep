@@ -112,14 +112,16 @@ def main():
     from optparse import OptionParser
     parser = OptionParser(usage=_CMD_USAGE)
     parser.add_option('-o', '--outfile', dest='outfile',
-        help='Save stats to <outfile>', default=None)
+                      help='Save stats to <outfile>', default=None)
     parser.add_option('-v', '--visualize', action='store_true',
-        dest='visualize', help='Visualize result at exit',
-        default=False)
+                      dest='visualize', help='Visualize result at exit',
+                      default=False)
     parser.add_option('-c', '--callgrind', action='store_true',
-        dest='callgrind', help='Output file in callgrind format',
-        default=False)
-
+                      dest='callgrind', help='Output file in callgrind format',
+                      default=False)
+    parser.add_option('-l', '--lines', action='store_true',
+                      dest='lines', help='Perform line-by-line with pprof',
+                      default=False)
 
     if not sys.argv[1:] or sys.argv[1] in ("--help", "-h"):
         parser.print_help()
@@ -142,7 +144,12 @@ def main():
         print('Error:', main_file, 'does not exist')
         sys.exit(1)
 
-#       .. execute file ..
+    if options.lines:
+        options.lines = '--lines'
+    else:
+        options.lines = ''
+
+    #       .. execute file ..
     sys.path.insert(0, os.path.dirname(main_file))
     start(out_file)
     exec(compile(open(main_file).read(), main_file, 'exec'),
@@ -158,18 +165,17 @@ def main():
         pprof_exec = ('google-pprof', 'pprof')[res != 0]
 
         if options.visualize:
-#       .. strip memory address, 32 bit-compatile ..
+            # .. strip memory address, 32 bit-compatible ..
             sed_filter = '/[[:xdigit:]]\{8\}$/d'
-            call("%s --cum --text %s %s | sed '%s' | less" % \
-                 (pprof_exec, sys.executable, options.outfile, sed_filter),
-                 shell=True)
+            call("%s --cum --text %s %s %s | sed '%s' | less" % \
+                 (pprof_exec, options.lines, sys.executable, options.outfile,
+                  sed_filter), shell=True)
 
         if options.callgrind:
-            call("%s --callgrind %s %s > %s" % \
-                 (pprof_exec, sys.executable, out_file, options.outfile),
-                 shell=True)
+            call("%s --callgrind %s %s %s > %s" % \
+                 (pprof_exec, options.lines, sys.executable, out_file,
+                  options.outfile), shell=True)
             tmp_file.close()
-
 
 if __name__ == '__main__':
     main()
